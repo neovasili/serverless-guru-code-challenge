@@ -10,7 +10,7 @@ documentation:
     - docs/**/*
 
 iac:
-    - src/resources/*
+    - resources/*
 
 api:
     - src/*

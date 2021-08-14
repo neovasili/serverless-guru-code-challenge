@@ -33,6 +33,7 @@ RUN npm install --global --unsafe-perm --loglevel=error --no-optional \
 FROM base as backend
 
 COPY /src ./src
+COPY /resources ./resources
 COPY package.json ./package.json
 COPY serverless.yml ./serverless.yml
 COPY requirements.txt ./requirements.txt
