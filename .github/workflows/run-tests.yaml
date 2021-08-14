@@ -1,0 +1,36 @@
+---
+name: "Run Tests"
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - src/**
+      - tests/**
+      - serverless.yml
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+
+      - name: Install dependencies
+        run: |
+          pip3 install -r requirements.txt
+          pip3 install -r requirements-dev.txt
+
+      - name: Execute unit tests
+        run: python3 -m unittest discover -s tests -p "*_test.py" -v
+
+      - name: Compute code coverage
+        run: |
+          coverage run --omit='*.env*,*tests/*' tests/**/*_test.py
+          coverage json
+          jq -r '.totals.percent_covered' coverage.json | cut -d . -f 1 | xargs echo "CODE COVERAGE:"
+        env:
+          PYTHONPATH: "./"
