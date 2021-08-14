@@ -1,0 +1,34 @@
+# Generics
+.git/
+.gitignore
+.github/
+.pre-commint-config.yaml
+setup.cfg
+README.md
+
+# Distribution / packaging
+.Python
+.env/
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Python
+**/__pycache__
+
+# Serverless directories
+.serverless
+node_modules
+package-lock.json
