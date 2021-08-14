@@ -1,0 +1,31 @@
+---
+ci:
+    - .github/*
+    - .github/**/*
+    - .pre-commit-config.yaml
+
+documentation:
+    - ./*.md
+    - docs/*
+    - docs/**/*
+
+iac:
+    - src/resources/*
+
+api:
+    - src/*
+    - src/**/*
+    - serverless.yml
+
+tests:
+    - tests/*
+    - tests/**/*
+
+docker:
+    - Dockerfile
+    - .Dockerignore
+
+dependencies:
+    - package.json
+    - requirements.txt
+    - requirements-dev.txt

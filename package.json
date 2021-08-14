@@ -1,0 +1,31 @@
+{
+  "name": "orders-service",
+  "version": "1.0.0",
+  "description": "Service with graphql API to manage CRUD operations of restaurants delivery orders",
+  "main": "main.py",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neovasili/serverless-guru-code-challenge.git"
+  },
+  "keywords": [
+    "appsync",
+    "serverless-framework",
+    "python",
+    "aws"
+  ],
+  "author": "Juan Manuel Ruiz Fernández",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/neovasili/serverless-guru-code-challenge/issues"
+  },
+  "homepage": "https://github.com/neovasili/serverless-guru-code-challenge#readme",
+  "devDependencies": {
+    "serverless": "^2.54.0",
+    "serverless-appsync-plugin": "^1.11.3",
+    "serverless-iam-roles-per-function": "^3.2.0",
+    "serverless-python-requirements": "^5.1.1"
+  }
+}

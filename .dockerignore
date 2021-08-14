@@ -1,5 +1,10 @@
 # Generics
-.local-arguments.yml
+.git/
+.gitignore
+.github/
+.pre-commint-config.yaml
+setup.cfg
+README.md
 
 # Distribution / packaging
 .Python
@@ -27,4 +32,3 @@ var/
 .serverless
 node_modules
 package-lock.json
-

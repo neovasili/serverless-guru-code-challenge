@@ -1,0 +1,14 @@
+---
+name: "Build check"
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Try to build docker image
+        run: docker build -t build-check:test .
