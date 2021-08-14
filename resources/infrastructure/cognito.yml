@@ -1,0 +1,30 @@
+---
+Resources:
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: ${self:custom.cognito.userpool.name}
+      AutoVerifiedAttributes:
+        - email
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: false
+          RequireUppercase: true
+      UsernameAttributes:
+        - email
+
+  CognitoClient:
+    Type: AWS::Cognito::UserPoolClient
+    DependsOn:
+      - UserPool
+    Properties:
+      ClientName: ${self:custom.cognito.client.name}
+      GenerateSecret: false
+      RefreshTokenValidity: 30
+      UserPoolId: !Ref UserPool
+      ExplicitAuthFlows:
+        - ALLOW_REFRESH_TOKEN_AUTH
+        - ALLOW_USER_PASSWORD_AUTH
