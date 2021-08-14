@@ -27,10 +27,11 @@ jobs:
       - name: Execute unit tests
         run: python3 -m unittest discover -s tests -p "*_test.py" -v
 
-      - name: Compute code coverage
-        run: |
-          coverage run --omit='*.env*,*tests/*' tests/**/*_test.py
-          coverage json
-          jq -r '.totals.percent_covered' coverage.json | cut -d . -f 1 | xargs echo "CODE COVERAGE:"
-        env:
-          PYTHONPATH: "./"
+      # Comment for now -> future use
+      # - name: Compute code coverage
+      #   run: |
+      #     coverage run --omit='*.env*,*tests/*' tests/**/*_test.py
+      #     coverage json
+      #     jq -r '.totals.percent_covered' coverage.json | cut -d . -f 1 | xargs echo "CODE COVERAGE:"
+      #   env:
+      #     PYTHONPATH: "./"

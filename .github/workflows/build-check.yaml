@@ -1,5 +1,5 @@
 ---
-name: "Build and deploy check"
+name: "Build check"
 on:
   pull_request:
     branches:
