@@ -1,0 +1,58 @@
+service: orders-service
+
+frameworkVersion: ">=2.53.1"
+configValidationMode: error
+variablesResolutionMode: 20210326
+disabledDeprecations:
+  - CLI_OPTIONS_SCHEMA
+
+plugins:
+  - serverless-python-requirements
+  - serverless-iam-roles-per-function
+  - serverless-appsync-plugin
+
+provider:
+  name: aws
+  runtime: python3.8
+  lambdaHashingVersion: 20201221
+  timeout: 30
+  memorySize: 256
+  logRetentionInDays: 14
+  versionFunctions: false
+  stackName: ${self:custom.base_name}
+  stage: ${self:custom.arguments.stage}
+  region: ${self:custom.arguments.region}
+
+custom:
+  arguments: ${file( .local-arguments.yml )}
+  base_name: ${self:custom.arguments.prefix}-${self:service}-${self:custom.arguments.region}
+  pythonRequirements:
+    useStaticCache: true
+    useDownloadCache: true
+    cacheLocation: .env/requirements_cache
+    pythonBin: /usr/bin/python3
+    dockerizePip: non-linux
+    layer:
+      name: python-requirements
+      description: Python requirements lambda layer
+      compatibleRuntimes:
+        - python3.8
+      licenseInfo: GPLv3
+      allowedAccounts:
+        - "*"
+
+package:
+  individually: true
+  patterns:
+    - "!**/*"
+
+functions:
+  hello:
+    handler: src/handler/handler.hello
+    environment:
+      LOG_LEVEL: debug
+    package:
+      patterns:
+        - src/handler/handler.py
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}

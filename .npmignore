@@ -1,9 +1,5 @@
-# Generics
-.local-arguments.yml
-
 # Distribution / packaging
 .Python
-.env/
 env/
 build/
 develop-eggs/
@@ -20,11 +16,5 @@ var/
 .installed.cfg
 *.egg
 
-# Python
-**/__pycache__
-
 # Serverless directories
 .serverless
-node_modules
-package-lock.json
-
