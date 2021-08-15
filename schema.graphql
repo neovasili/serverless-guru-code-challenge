@@ -40,6 +40,10 @@ type Mutation {
 	cancelOrder(
 		order_id: String!
 	): Order!
+
+	deleteOrder(
+		order_id: String!
+	): Order!
 }
 
 type Order {

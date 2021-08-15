@@ -25,3 +25,8 @@ class CannotGetDataFromDatabase(CustomException):
 class CannotSaveDataIntoDatabase(CustomException):
     def __init__(self, message: str = None):
         super().__init__("Cannot retrieve data from database" if message is None else message)
+
+
+class CannotDeleteDataFromDatabase(CustomException):
+    def __init__(self, message: str = None):
+        super().__init__("Cannot delete data from database" if message is None else message)

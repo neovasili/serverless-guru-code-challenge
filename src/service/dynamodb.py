@@ -6,6 +6,7 @@ from src.helper.boto import BotoResourceHelper
 from src.helper.exception import (
     CannotGetDataFromDatabase,
     CannotSaveDataIntoDatabase,
+    CannotDeleteDataFromDatabase,
 )
 
 
@@ -32,3 +33,10 @@ class DynamoDBService(BotoResourceHelper):
             return response
         except Exception as error:
             raise CannotSaveDataIntoDatabase(str(error))
+
+    def delete(self, id_name: str, item_id: str) -> dict:
+        try:
+            result = self.__table.delete_item(Key={id_name: item_id})
+            return result["Item"] if "Item" in result else None
+        except Exception as error:
+            raise CannotDeleteDataFromDatabase(str(error))
