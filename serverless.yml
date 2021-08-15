@@ -49,6 +49,10 @@ custom:
       name: ${self:custom.base_prefix}-get-order
       role_name: ${self:custom.base_prefix}-get-order-role
       arn: ${self:custom.base_arn.lambda}:function:${self:custom.lambda.get_order.name}
+    update_order:
+      name: ${self:custom.base_prefix}-update-order
+      role_name: ${self:custom.base_prefix}-update-order-role
+      arn: ${self:custom.base_arn.lambda}:function:${self:custom.lambda.update_order.name}
   appSync:
     name: orders-api
     authenticationType: AMAZON_COGNITO_USER_POOLS
@@ -65,6 +69,41 @@ custom:
       - dataSource: getOrder
         type: Query
         field: getOrder
+        request: false
+        response: false
+      - dataSource: updateOrder
+        type: Mutation
+        field: updateOrder
+        request: false
+        response: false
+      - dataSource: updateOrder
+        type: Mutation
+        field: acceptOrder
+        request: false
+        response: false
+      - dataSource: updateOrder
+        type: Mutation
+        field: startCookingOrder
+        request: false
+        response: false
+      - dataSource: updateOrder
+        type: Mutation
+        field: readyToDeliverOrder
+        request: false
+        response: false
+      - dataSource: updateOrder
+        type: Mutation
+        field: onRouteOrder
+        request: false
+        response: false
+      - dataSource: updateOrder
+        type: Mutation
+        field: deliveredOrder
+        request: false
+        response: false
+      - dataSource: updateOrder
+        type: Mutation
+        field: cancelOrder
         request: false
         response: false
     dataSources:
@@ -90,6 +129,17 @@ custom:
               Resource:
                 - ${self:custom.lambda.get_order.arn}
                 - ${self:custom.lambda.get_order.arn}:*
+      - type: AWS_LAMBDA
+        name: updateOrder
+        config:
+          functionName: UpdateOrder
+          iamRoleStatements:
+            - Effect: "Allow"
+              Action:
+                - "lambda:invokeFunction"
+              Resource:
+                - ${self:custom.lambda.update_order.arn}
+                - ${self:custom.lambda.update_order.arn}:*
   pythonRequirements:
     useStaticCache: true
     useDownloadCache: true
@@ -150,6 +200,23 @@ functions:
     package:
       patterns:
         - src/handler/get_order.py
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+  UpdateOrder:
+    name: ${self:custom.lambda.update_order.name}
+    handler: src/handler/update_order.handler
+    environment:
+      ORDERS_TABLE: ${self:custom.dynamodb.orders.table_name}
+    iamRoleStatementsName: ${self:custom.lambda.update_order.role_name}
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+        Resource: ${self:custom.dynamodb.orders.arn}
+    package:
+      patterns:
+        - src/handler/update_order.py
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
 
