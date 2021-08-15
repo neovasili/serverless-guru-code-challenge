@@ -30,7 +30,7 @@ class OrderController:
             order = self.get_order(order_id=order_id)
 
         self.__logger.info("Creating order")
-        input_parameters["order_id"] = order_id
+        order_id = order_id
         order = Order(input_parameters=input_parameters)
 
         self.__repository.save(order=order)
@@ -39,7 +39,8 @@ class OrderController:
         return order
 
     def update_order(self, input_parameters: dict) -> Order:
-        order = self.get_order(order_id=input_parameters["order_id"])
+        order_id = input_parameters["order_id"]
+        order = self.get_order(order_id=order_id)
 
         if order is None:
             return None
@@ -53,7 +54,8 @@ class OrderController:
         return order
 
     def accept_order(self, input_parameters: dict) -> Order:
-        order = self.get_order(order_id=input_parameters["order_id"])
+        order_id = input_parameters["order_id"]
+        order = self.get_order(order_id=order_id)
 
         if order is None:
             return None
@@ -67,7 +69,8 @@ class OrderController:
         return order
 
     def start_cooking_order(self, input_parameters: dict) -> Order:
-        order = self.get_order(order_id=input_parameters["order_id"])
+        order_id = input_parameters["order_id"]
+        order = self.get_order(order_id=order_id)
 
         if order is None:
             return None
@@ -81,7 +84,8 @@ class OrderController:
         return order
 
     def ready_to_deliver_order(self, input_parameters: dict) -> Order:
-        order = self.get_order(order_id=input_parameters["order_id"])
+        order_id = input_parameters["order_id"]
+        order = self.get_order(order_id=order_id)
 
         if order is None:
             return None
@@ -95,7 +99,8 @@ class OrderController:
         return order
 
     def on_route_order(self, input_parameters: dict) -> Order:
-        order = self.get_order(order_id=input_parameters["order_id"])
+        order_id = input_parameters["order_id"]
+        order = self.get_order(order_id=order_id)
 
         if order is None:
             return None
@@ -109,7 +114,8 @@ class OrderController:
         return order
 
     def delivered_order(self, input_parameters: dict) -> Order:
-        order = self.get_order(order_id=input_parameters["order_id"])
+        order_id = input_parameters["order_id"]
+        order = self.get_order(order_id=order_id)
 
         if order is None:
             return None
@@ -123,7 +129,8 @@ class OrderController:
         return order
 
     def cancel_order(self, input_parameters: dict) -> Order:
-        order = self.get_order(order_id=input_parameters["order_id"])
+        order_id = input_parameters["order_id"]
+        order = self.get_order(order_id=order_id)
 
         if order is None:
             return None
@@ -133,5 +140,19 @@ class OrderController:
 
         self.__repository.save(order=order)
         self.__logger.info("Order canceled")
+
+        return order
+
+    def delete_order(self, input_parameters: dict) -> Order:
+        order_id = input_parameters["order_id"]
+        order = self.get_order(order_id=order_id)
+
+        if order is None:
+            return None
+
+        self.__logger.info("Deleting order")
+
+        self.__repository.delete(order_id=order_id)
+        self.__logger.info("Order deleted")
 
         return order
