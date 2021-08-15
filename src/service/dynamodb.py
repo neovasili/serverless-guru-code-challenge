@@ -24,6 +24,10 @@ class DynamoDBService(BotoResourceHelper):
     def save(self, item: dict) -> dict:
         try:
             dynamodb_record = json.loads(json.dumps(item), parse_float=Decimal)
+        except Exception:
+            dynamodb_record = item
+
+        try:
             response = self.__table.put_item(Item=dynamodb_record)
             return response
         except Exception as error:
