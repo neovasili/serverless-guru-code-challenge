@@ -44,7 +44,7 @@ sls info --name juf --region eu-west-1 --cognito-arn "arn:aws:cognito-idp:eu-wes
 
 We have a solution here to simplify this.
 
-You need to create a file called `./api/.local-arguments.yml` (there is a template file that you can use it to simplify the process `.local-arguments.yml.template`) with the following content:
+You need to create a file called `./api/.local-arguments.yml` (there is a template file that you can use it to simplify the process `.local-arguments.template`) with the following content:
 
 ```yaml
 ---

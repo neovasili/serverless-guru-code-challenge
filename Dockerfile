@@ -46,7 +46,7 @@ COPY package.json ./package.json
 COPY serverless.yml ./serverless.yml
 COPY schema.graphql ./schema.graphql
 COPY requirements.txt ./requirements.txt
-COPY .local-arguments.yml.template ./.local-arguments.yml
+COPY .local-arguments.template ./.local-arguments.yml
 
 RUN npm install --unsafe-perm --loglevel=error --no-optional
 RUN sls requirements install
