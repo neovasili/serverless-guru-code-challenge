@@ -16,7 +16,7 @@ provider:
   runtime: python3.8
   lambdaHashingVersion: 20201221
   timeout: 30
-  memorySize: 256
+  memorySize: 512
   logRetentionInDays: 14
   versionFunctions: false
   stackName: ${self:custom.base_name}
@@ -34,6 +34,31 @@ custom:
       name: ${self:custom.arguments.prefix}-${self:custom.arguments.stage}-user-pool
     client:
       name: ${self:custom.arguments.prefix}-${self:custom.arguments.stage}-user-pool-client
+  appSync:
+    name: orders-api
+    authenticationType: AMAZON_COGNITO_USER_POOLS
+    userPoolConfig:
+      awsRegion: ${self:provider.region}
+      defaultAction: ALLOW
+      userPoolId: {Ref: UserPool}
+    mappingTemplates:
+      - dataSource: createOrder
+        type: Mutation
+        field: createOrder
+        request: false
+        response: false
+    dataSources:
+      - type: AWS_LAMBDA
+        name: createOrder
+        config:
+          functionName: CreateOrder
+          iamRoleStatements:
+            - Effect: "Allow"
+              Action:
+                - "lambda:invokeFunction"
+              Resource:
+                - "arn:aws:lambda:${aws:region}:${aws:accountId}:function:createOrder"
+                - "arn:aws:lambda:${aws:region}:${aws:accountId}:function:createOrder:*"
   pythonRequirements:
     useStaticCache: true
     useDownloadCache: true
@@ -53,16 +78,32 @@ package:
   individually: true
   patterns:
     - "!**/*"
+    - src/controller/order.py
+    - src/controller/repository.py
+    - src/model/order.py
+    - src/service/dynamodb.py
+    - src/helper/boto.py
+    - src/helper/exception.py
+    - src/helper/model.py
+    - src/helper/tools.py
 
 functions:
-  hello:
-    handler: src/handler/handler.hello
+  CreateOrder:
+    name: createOrder
+    handler: src/handler/create_order.handler
     environment:
       LOG_LEVEL: debug
       ORDERS_TABLE: ${self:custom.dynamodb.orders.table_name}
+    iamRoleStatementsName: CreateOrderRole
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+        Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.dynamodb.orders.table_name}"
     package:
       patterns:
-        - src/handler/handler.py
+        - src/handler/create_order.py
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
 
