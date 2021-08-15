@@ -30,9 +30,108 @@ class OrderController:
             order = self.get_order(order_id=order_id)
 
         self.__logger.info("Creating order")
+        input_parameters["order_id"] = order_id
         order = Order(input_parameters=input_parameters)
 
         self.__repository.save(order=order)
         self.__logger.info("Created order")
+
+        return order
+
+    def update_order(self, input_parameters: dict) -> Order:
+        order = self.get_order(order_id=input_parameters["order_id"])
+
+        if order is None:
+            return None
+
+        self.__logger.info("Updating order")
+        order.update(input_parameters=input_parameters)
+
+        self.__repository.save(order=order)
+        self.__logger.info("Updated order")
+
+        return order
+
+    def accept_order(self, input_parameters: dict) -> Order:
+        order = self.get_order(order_id=input_parameters["order_id"])
+
+        if order is None:
+            return None
+
+        self.__logger.info("Accepting order")
+        order.accept()
+
+        self.__repository.save(order=order)
+        self.__logger.info("Order accepted")
+
+        return order
+
+    def start_cooking_order(self, input_parameters: dict) -> Order:
+        order = self.get_order(order_id=input_parameters["order_id"])
+
+        if order is None:
+            return None
+
+        self.__logger.info("Starting to cook order")
+        order.start_cooking()
+
+        self.__repository.save(order=order)
+        self.__logger.info("Started to cook order")
+
+        return order
+
+    def ready_to_deliver_order(self, input_parameters: dict) -> Order:
+        order = self.get_order(order_id=input_parameters["order_id"])
+
+        if order is None:
+            return None
+
+        self.__logger.info("Putting ready to deliver order")
+        order.ready_to_deliver()
+
+        self.__repository.save(order=order)
+        self.__logger.info("Order ready to deliver")
+
+        return order
+
+    def on_route_order(self, input_parameters: dict) -> Order:
+        order = self.get_order(order_id=input_parameters["order_id"])
+
+        if order is None:
+            return None
+
+        self.__logger.info("Putting order on route")
+        order.on_route()
+
+        self.__repository.save(order=order)
+        self.__logger.info("Order on route")
+
+        return order
+
+    def delivered_order(self, input_parameters: dict) -> Order:
+        order = self.get_order(order_id=input_parameters["order_id"])
+
+        if order is None:
+            return None
+
+        self.__logger.info("Delivering order")
+        order.delivered()
+
+        self.__repository.save(order=order)
+        self.__logger.info("Order delivered")
+
+        return order
+
+    def cancel_order(self, input_parameters: dict) -> Order:
+        order = self.get_order(order_id=input_parameters["order_id"])
+
+        if order is None:
+            return None
+
+        self.__logger.info("Canceling order")
+        order.cancel()
+
+        self.__repository.save(order=order)
+        self.__logger.info("Order canceled")
 
         return order

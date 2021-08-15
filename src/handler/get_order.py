@@ -24,7 +24,7 @@ def handler(event, context):
         response = ApiHelper.get_response(event=event, item=order)
 
     except Exception as e:
-        logger.error(e)
+        logger.exception(e)
 
     logger.debug(response)
 

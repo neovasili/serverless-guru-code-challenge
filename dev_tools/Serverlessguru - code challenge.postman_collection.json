@@ -145,8 +145,295 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation Test {\n  createOrder(\n        products: [\n            \"big cheese burger\",\n            \"medium fries\",\n            \"medium cola soda\"\n        ],\n        restaurant_id: \"1\",\n        user_address: \"my home\",\n        user_email: \"user@user.com\",\n        user_phonenumber: \"my_phone_number\",\n        subtotal: 9.5,\n        tax: 0.2,\n        delivery_fee: 1.0,\n        total: 10.7,\n    ) {\n        order_id\n        products\n        created_at\n        status\n        total\n  }\n}",
+						"query": "mutation Test {\n    createOrder(\n        products: [\n            \"big cheese burger\",\n            \"medium fries\",\n            \"medium cola soda\"\n        ],\n        restaurant_id: \"1\",\n        user_address: \"my home\",\n        user_email: \"user@user.com\",\n        user_phonenumber: \"my_phone_number\",\n        subtotal: 9.5,\n        tax: 0.2,\n        delivery_fee: 1.0,\n        total: 10.7,\n    ) {\n        order_id\n        products\n        created_at\n        status\n        total\n  }\n}",
 						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}",
+					"host": [
+						"{{api_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateOrder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Test ($order_id: String!) {\n    updateOrder(\n        order_id: $order_id\n        products: [\n            \"big cheese burger\",\n            \"medium fries\",\n            \"medium cola soda\"\n        ],\n        restaurant_id: \"1\",\n        user_address: \"my home\",\n        user_email: \"user@user.com\",\n        user_phonenumber: \"my_phone_number\",\n        subtotal: 9.4,\n        tax: 0.2,\n        delivery_fee: 1.0,\n        total: 10.6,\n    ) {\n        order_id\n        products\n        last_modified_at\n        status\n        total\n  }\n}",
+						"variables": "{\n    \"order_id\": \"{{order_id}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}",
+					"host": [
+						"{{api_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AcceptOrder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Test ($order_id: String!) {\n    acceptOrder(\n        order_id: $order_id\n    ) {\n        order_id\n        products\n        last_modified_at\n        status\n        total\n  }\n}",
+						"variables": "{\n    \"order_id\": \"{{order_id}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}",
+					"host": [
+						"{{api_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "StartCookingOrder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Test ($order_id: String!) {\n    startCookingOrder(\n        order_id: $order_id\n    ) {\n        order_id\n        products\n        last_modified_at\n        status\n        total\n  }\n}",
+						"variables": "{\n    \"order_id\": \"{{order_id}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}",
+					"host": [
+						"{{api_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ReadyToDeliverOrder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Test ($order_id: String!) {\n    readyToDeliverOrder(\n        order_id: $order_id\n    ) {\n        order_id\n        products\n        last_modified_at\n        status\n        total\n  }\n}",
+						"variables": "{\n    \"order_id\": \"{{order_id}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}",
+					"host": [
+						"{{api_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OnRouteOrder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Test ($order_id: String!) {\n    onRouteOrder(\n        order_id: $order_id\n    ) {\n        order_id\n        products\n        last_modified_at\n        status\n        total\n  }\n}",
+						"variables": "{\n    \"order_id\": \"{{order_id}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}",
+					"host": [
+						"{{api_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeliveredOrder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Test ($order_id: String!) {\n    deliveredOrder(\n        order_id: $order_id\n    ) {\n        order_id\n        products\n        last_modified_at\n        status\n        total\n  }\n}",
+						"variables": "{\n    \"order_id\": \"{{order_id}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}",
+					"host": [
+						"{{api_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CancelOrder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Test ($order_id: String!) {\n    cancelOrder(\n        order_id: $order_id\n    ) {\n        order_id\n        products\n        last_modified_at\n        status\n        total\n  }\n}",
+						"variables": "{\n    \"order_id\": \"{{order_id}}\"\n}"
 					}
 				},
 				"url": {
@@ -175,7 +462,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query Test ($order_id: String!) {\n  getOrder(\n        order_id: $order_id\n    ) {\n        order_id\n        products\n        created_at\n        status\n        total\n  }\n}",
+						"query": "query Test ($order_id: String!) {\n    getOrder(\n        order_id: $order_id\n    ) {\n        order_id\n        products\n        created_at\n        status\n        total\n  }\n}",
 						"variables": "{\n    \"order_id\": \"{{order_id}}\"\n}"
 					}
 				},

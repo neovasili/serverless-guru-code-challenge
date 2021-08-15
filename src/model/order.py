@@ -23,10 +23,31 @@ class Order(ModelHelper):
     """
 
     def __init__(self, input_parameters: dict):
+        self.__status = self.get_value(
+            input_object=input_parameters,
+            input_object_property_name="status",
+            default_value=OrderStatus.PENDING,
+            allowed_values=OrderStatus.__dict__.values(),
+        )
+        self.__created_at = self.get_value(
+            input_object=input_parameters,
+            input_object_property_name="created_at",
+            default_value=StringHelper.create_datetime(),
+        )
+        self.update(input_parameters=input_parameters)
+
+    @staticmethod
+    def generate_id() -> str:
+        return IDHelper.create_id()
+
+    def get_model(self) -> dict:
+        return self.get_model_dict()
+
+    def update(self, input_parameters: dict):
         self.__order_id = self.get_value(
             input_object=input_parameters,
             input_object_property_name="order_id",
-            default_value=Order.generate_id(),
+            mandatory=True,
         )
         self.__user_email = self.get_value(
             input_object=input_parameters,
@@ -73,26 +94,28 @@ class Order(ModelHelper):
             input_object_property_name="total",
             mandatory=True,
         )
-        self.__status = self.get_value(
-            input_object=input_parameters,
-            input_object_property_name="status",
-            default_value=OrderStatus.PENDING,
-            allowed_values=OrderStatus.__dict__.values(),
-        )
-        self.__created_at = self.get_value(
-            input_object=input_parameters,
-            input_object_property_name="created_at",
-            default_value=StringHelper.create_datetime(),
-        )
-        self.__last_modified_at = self.get_value(
-            input_object=input_parameters,
-            input_object_property_name="last_modified_at",
-            default_value=StringHelper.create_datetime(),
-        )
+        self.__last_modified_at = StringHelper.create_datetime()
 
-    @staticmethod
-    def generate_id() -> str:
-        return IDHelper.create_id()
+    def accept(self):
+        self.__status = OrderStatus.RECEIVED
+        self.__last_modified_at = StringHelper.create_datetime()
 
-    def get_model(self) -> dict:
-        return self.get_model_dict()
+    def start_cooking(self):
+        self.__status = OrderStatus.COOKING
+        self.__last_modified_at = StringHelper.create_datetime()
+
+    def ready_to_deliver(self):
+        self.__status = OrderStatus.READY
+        self.__last_modified_at = StringHelper.create_datetime()
+
+    def on_route(self):
+        self.__status = OrderStatus.ON_ROUTE
+        self.__last_modified_at = StringHelper.create_datetime()
+
+    def delivered(self):
+        self.__status = OrderStatus.DELIVERED
+        self.__last_modified_at = StringHelper.create_datetime()
+
+    def cancel(self):
+        self.__status = OrderStatus.CANCELED
+        self.__last_modified_at = StringHelper.create_datetime()
