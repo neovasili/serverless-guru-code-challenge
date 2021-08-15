@@ -15,3 +15,13 @@ class MissingMandatoryInput(CustomException):
 class NotAllowedInputValue(CustomException):
     def __init__(self, message: str = None):
         super().__init__("Current input is not allowed" if message is None else message)
+
+
+class CannotGetDataFromDatabase(CustomException):
+    def __init__(self, message: str = None):
+        super().__init__("Cannot retrieve data from database" if message is None else message)
+
+
+class CannotSaveDataIntoDatabase(CustomException):
+    def __init__(self, message: str = None):
+        super().__init__("Cannot retrieve data from database" if message is None else message)
