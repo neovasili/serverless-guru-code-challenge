@@ -1,5 +1,12 @@
 # Serverlessguru Code Challenge
 
+|Name|Badge|
+|:-:|:-:|
+|Linters|[![Checks, linters and formatters](https://github.com/neovasili/serverless-guru-code-challenge/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/neovasili/serverless-guru-code-challenge/actions/workflows/pre-commit.yml)|
+|Quality|[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=neovasili_serverless-guru-code-challenge&metric=alert_status)](https://sonarcloud.io/dashboard?id=neovasili_serverless-guru-code-challenge)|
+|Build and deploy check|[![Build check](https://github.com/neovasili/serverless-guru-code-challenge/actions/workflows/build-check.yaml/badge.svg)](https://github.com/neovasili/serverless-guru-code-challenge/actions/workflows/build-check.yaml)|
+|Run tests|[![Run Tests](https://github.com/neovasili/serverless-guru-code-challenge/actions/workflows/run-tests.yaml/badge.svg)](https://github.com/neovasili/serverless-guru-code-challenge/actions/workflows/run-tests.yaml)|
+
 Repository containing the code challenge requested
 
 - [Serverlessguru Code Challenge](#serverlessguru-code-challenge)
