@@ -17,4 +17,4 @@ jobs:
           aws-secret-access-key: ${{ secrets.FAKE_BUILD_SECRET }}
           aws-region: eu-west-1
       - name: Try to build docker image
-        run: docker build -t build-check:test .
+        run: docker build --build-arg access_key="$AWS_ACCESS_KEY_ID" --build-arg secret_key="$AWS_SECRET_ACCESS_KEY" --build-arg aws_region=eu-west-1 -t build-check:test .
