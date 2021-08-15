@@ -1,0 +1,38 @@
+type Mutation {
+	createOrder(
+		user_email: String!,
+		user_phonenumber: String!,
+		user_address: String!,
+	    restaurant_id: String!,
+		products: [String!]!,
+		subtotal: Float!,
+		tax: Float!,
+		delivery_fee: Float!,
+		total: Float!
+	): Order!
+}
+
+type Order {
+	order_id: String!
+	user_email: String!,
+	user_phonenumber: String!,
+	user_address: String!,
+	restaurant_id: String!,
+	products: [String!]!
+	subtotal: Float!
+	tax: Float!
+	delivery_fee: Float!
+	total: Float!
+	status: String!
+	created_at: String
+	last_modified_at: String
+}
+
+type Query {
+	getOrder(order_id: String!): Order!
+}
+
+schema {
+	mutation: Mutation
+	query: Query
+}

@@ -36,6 +36,7 @@ COPY /src ./src
 COPY /resources ./resources
 COPY package.json ./package.json
 COPY serverless.yml ./serverless.yml
+COPY schema.graphql ./schema.graphql
 COPY requirements.txt ./requirements.txt
 COPY .local-arguments.yml.template ./.local-arguments.yml
 
