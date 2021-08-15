@@ -159,6 +159,36 @@
 			"response": []
 		},
 		{
+			"name": "GetOrder",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query Test ($order_id: String!) {\n    getOrder(\n        order_id: $order_id\n    ) {\n        order_id\n        products\n        created_at\n        status\n        total\n  }\n}",
+						"variables": "{\n    \"order_id\": \"{{order_id}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}",
+					"host": [
+						"{{api_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "UpdateOrder",
 			"event": [
 				{
@@ -446,7 +476,18 @@
 			"response": []
 		},
 		{
-			"name": "GetOrder",
+			"name": "DeleteOrder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -462,7 +503,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query Test ($order_id: String!) {\n    getOrder(\n        order_id: $order_id\n    ) {\n        order_id\n        products\n        created_at\n        status\n        total\n  }\n}",
+						"query": "mutation Test ($order_id: String!) {\n    deleteOrder(\n        order_id: $order_id\n    ) {\n        order_id\n  }\n}",
 						"variables": "{\n    \"order_id\": \"{{order_id}}\"\n}"
 					}
 				},
