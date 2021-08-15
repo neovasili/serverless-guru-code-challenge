@@ -24,6 +24,10 @@ class ApiHelper:
         return event["arguments"]
 
     @staticmethod
+    def get_operation(event: dict) -> dict:
+        return event["info"]["fieldName"]
+
+    @staticmethod
     def get_response(event: dict, item: object) -> dict:
         expected_output = event["info"]["selectionSetList"]
         response = dict()
