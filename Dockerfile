@@ -9,6 +9,14 @@ ARG nodejs_ver="16"
 
 ARG sls_ver="2.53.1"
 
+ARG access_key=""
+ARG secret_key=""
+ARG aws_region="eu-west-1"
+
+ENV AWS_ACCESS_KEY_ID=${access_key}
+ENV AWS_SECRET_ACCESS_KEY=${secret_key}
+ENV AWS_REGION=${aws_region}
+
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN mkdir /opt/api
@@ -36,6 +44,7 @@ COPY /src ./src
 COPY /resources ./resources
 COPY package.json ./package.json
 COPY serverless.yml ./serverless.yml
+COPY schema.graphql ./schema.graphql
 COPY requirements.txt ./requirements.txt
 COPY .local-arguments.yml.template ./.local-arguments.yml
 

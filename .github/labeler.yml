@@ -12,6 +12,9 @@ documentation:
 iac:
     - resources/*
 
+schema:
+    - schema.graphql
+
 api:
     - src/*
     - src/**/*
