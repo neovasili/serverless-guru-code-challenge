@@ -10,6 +10,36 @@ type Mutation {
 		delivery_fee: Float!,
 		total: Float!
 	): Order!
+	updateOrder(
+		order_id: String!,
+		user_email: String!,
+		user_phonenumber: String!,
+		user_address: String!,
+	    restaurant_id: String!,
+		products: [String!]!,
+		subtotal: Float!,
+		tax: Float!,
+		delivery_fee: Float!,
+		total: Float!
+	): Order!
+	acceptOrder(
+		order_id: String!
+	): Order!
+	startCookingOrder(
+		order_id: String!
+	): Order!
+	readyToDeliverOrder(
+		order_id: String!
+	): Order!
+	onRouteOrder(
+		order_id: String!
+	): Order!
+	deliveredOrder(
+		order_id: String!
+	): Order!
+	cancelOrder(
+		order_id: String!
+	): Order!
 }
 
 type Order {
