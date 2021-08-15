@@ -19,21 +19,32 @@ provider:
   memorySize: 512
   logRetentionInDays: 14
   versionFunctions: false
-  stackName: ${self:custom.base_name}
+  stackName: ${self:custom.arguments.prefix}-${self:service}-${self:custom.arguments.region}
   stage: ${self:custom.arguments.stage}
   region: ${self:custom.arguments.region}
+  environment:
+    LOG_LEVEL: debug
 
 custom:
   arguments: ${file( .local-arguments.yml )}
-  base_name: ${self:custom.arguments.prefix}-${self:service}-${self:custom.arguments.region}
+  base_prefix: ${self:custom.arguments.prefix}-${self:custom.arguments.stage}
+  base_arn:
+    dynamodb: arn:aws:dynamodb:${aws:region}:${aws:accountId}
+    lambda: arn:aws:lambda:${aws:region}:${aws:accountId}
   dynamodb:
     orders:
-      table_name: ${self:custom.arguments.prefix}-${self:custom.arguments.stage}-orders
+      table_name: ${self:custom.base_prefix}-orders
+      arn: ${self:custom.base_arn.dynamodb}:table/${self:custom.dynamodb.orders.table_name}
   cognito:
     userpool:
-      name: ${self:custom.arguments.prefix}-${self:custom.arguments.stage}-user-pool
+      name: ${self:custom.base_prefix}-user-pool
     client:
-      name: ${self:custom.arguments.prefix}-${self:custom.arguments.stage}-user-pool-client
+      name: ${self:custom.base_prefix}-user-pool-client
+  lambda:
+    create_order:
+      name: ${self:custom.base_prefix}-create-order
+      role_name: ${self:custom.base_prefix}-create-order-role
+      arn: ${self:custom.base_arn.lambda}:function:${self:custom.lambda.create_order.name}
   appSync:
     name: orders-api
     authenticationType: AMAZON_COGNITO_USER_POOLS
@@ -57,8 +68,8 @@ custom:
               Action:
                 - "lambda:invokeFunction"
               Resource:
-                - "arn:aws:lambda:${aws:region}:${aws:accountId}:function:createOrder"
-                - "arn:aws:lambda:${aws:region}:${aws:accountId}:function:createOrder:*"
+                - ${self:custom.lambda.create_order.arn}
+                - ${self:custom.lambda.create_order.arn}:*
   pythonRequirements:
     useStaticCache: true
     useDownloadCache: true
@@ -89,18 +100,17 @@ package:
 
 functions:
   CreateOrder:
-    name: createOrder
+    name: ${self:custom.lambda.create_order.name}
     handler: src/handler/create_order.handler
     environment:
-      LOG_LEVEL: debug
       ORDERS_TABLE: ${self:custom.dynamodb.orders.table_name}
-    iamRoleStatementsName: CreateOrderRole
+    iamRoleStatementsName: ${self:custom.lambda.create_order.role_name}
     iamRoleStatements:
       - Effect: "Allow"
         Action:
           - dynamodb:GetItem
           - dynamodb:PutItem
-        Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.dynamodb.orders.table_name}"
+        Resource: ${self:custom.dynamodb.orders.arn}
     package:
       patterns:
         - src/handler/create_order.py
