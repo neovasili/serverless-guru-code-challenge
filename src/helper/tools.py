@@ -40,3 +40,15 @@ class ApiHelper:
                 response[output] = "empty"
 
         return response
+
+    @staticmethod
+    def get_empty_response(event: dict, message: str) -> dict:
+        expected_output = event["info"]["selectionSetList"]
+        response = {
+            "message": message,
+        }
+
+        for output in expected_output:
+            response[output] = "empty"
+
+        return response

@@ -53,6 +53,10 @@ custom:
       name: ${self:custom.base_prefix}-update-order
       role_name: ${self:custom.base_prefix}-update-order-role
       arn: ${self:custom.base_arn.lambda}:function:${self:custom.lambda.update_order.name}
+    delete_order:
+      name: ${self:custom.base_prefix}-delete-order
+      role_name: ${self:custom.base_prefix}-delete-order-role
+      arn: ${self:custom.base_arn.lambda}:function:${self:custom.lambda.delete_order.name}
   appSync:
     name: orders-api
     authenticationType: AMAZON_COGNITO_USER_POOLS
@@ -106,6 +110,11 @@ custom:
         field: cancelOrder
         request: false
         response: false
+      - dataSource: deleteOrder
+        type: Mutation
+        field: deleteOrder
+        request: false
+        response: false
     dataSources:
       - type: AWS_LAMBDA
         name: createOrder
@@ -140,6 +149,17 @@ custom:
               Resource:
                 - ${self:custom.lambda.update_order.arn}
                 - ${self:custom.lambda.update_order.arn}:*
+      - type: AWS_LAMBDA
+        name: deleteOrder
+        config:
+          functionName: DeleteOrder
+          iamRoleStatements:
+            - Effect: "Allow"
+              Action:
+                - "lambda:invokeFunction"
+              Resource:
+                - ${self:custom.lambda.delete_order.arn}
+                - ${self:custom.lambda.delete_order.arn}:*
   pythonRequirements:
     useStaticCache: true
     useDownloadCache: true
@@ -217,6 +237,23 @@ functions:
     package:
       patterns:
         - src/handler/update_order.py
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+  DeleteOrder:
+    name: ${self:custom.lambda.delete_order.name}
+    handler: src/handler/delete_order.handler
+    environment:
+      ORDERS_TABLE: ${self:custom.dynamodb.orders.table_name}
+    iamRoleStatementsName: ${self:custom.lambda.delete_order.role_name}
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:DeleteItem
+        Resource: ${self:custom.dynamodb.orders.arn}
+    package:
+      patterns:
+        - src/handler/delete_order.py
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
 
