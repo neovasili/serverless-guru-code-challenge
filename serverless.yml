@@ -45,6 +45,10 @@ custom:
       name: ${self:custom.base_prefix}-create-order
       role_name: ${self:custom.base_prefix}-create-order-role
       arn: ${self:custom.base_arn.lambda}:function:${self:custom.lambda.create_order.name}
+    get_order:
+      name: ${self:custom.base_prefix}-get-order
+      role_name: ${self:custom.base_prefix}-get-order-role
+      arn: ${self:custom.base_arn.lambda}:function:${self:custom.lambda.get_order.name}
   appSync:
     name: orders-api
     authenticationType: AMAZON_COGNITO_USER_POOLS
@@ -56,6 +60,11 @@ custom:
       - dataSource: createOrder
         type: Mutation
         field: createOrder
+        request: false
+        response: false
+      - dataSource: getOrder
+        type: Query
+        field: getOrder
         request: false
         response: false
     dataSources:
@@ -70,6 +79,17 @@ custom:
               Resource:
                 - ${self:custom.lambda.create_order.arn}
                 - ${self:custom.lambda.create_order.arn}:*
+      - type: AWS_LAMBDA
+        name: getOrder
+        config:
+          functionName: GetOrder
+          iamRoleStatements:
+            - Effect: "Allow"
+              Action:
+                - "lambda:invokeFunction"
+              Resource:
+                - ${self:custom.lambda.get_order.arn}
+                - ${self:custom.lambda.get_order.arn}:*
   pythonRequirements:
     useStaticCache: true
     useDownloadCache: true
@@ -114,6 +134,22 @@ functions:
     package:
       patterns:
         - src/handler/create_order.py
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+  GetOrder:
+    name: ${self:custom.lambda.get_order.name}
+    handler: src/handler/get_order.handler
+    environment:
+      ORDERS_TABLE: ${self:custom.dynamodb.orders.table_name}
+    iamRoleStatementsName: ${self:custom.lambda.get_order.role_name}
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:GetItem
+        Resource: ${self:custom.dynamodb.orders.arn}
+    package:
+      patterns:
+        - src/handler/get_order.py
     layers:
       - {Ref: PythonRequirementsLambdaLayer}
 
