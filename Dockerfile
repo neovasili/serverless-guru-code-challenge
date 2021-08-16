@@ -6,6 +6,7 @@ LABEL version="v1.0.0"
 
 ARG python_ver="3.9"
 ARG nodejs_ver="16"
+ARG aws_cli_ver="1.19.57"
 
 ARG sls_ver="2.53.1"
 
@@ -27,7 +28,10 @@ RUN apt-get update \
   && apt-get -y install --no-install-recommends \
     python${python_ver} \
     python3-pip \
-    curl
+    curl \
+    jq
+RUN pip3 install awscli==${aws_cli_ver} --upgrade --user --no-warn-script-location \
+  && mv /root/.local/bin/aws* /usr/local/bin/
 RUN curl -sL https://deb.nodesource.com/setup_${nodejs_ver}.x | bash -
 RUN apt-get update \
   && apt-get -y install --no-install-recommends \
