@@ -1,5 +1,0 @@
----
-stage: ${opt:stage, "dev"}
-region: ${opt:region, "eu-west-1"}
-prefix: ${opt:prefix, "test"}
-api_version: ${opt:api-version, "v1"}

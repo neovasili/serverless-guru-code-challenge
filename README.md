@@ -1,5 +1,12 @@
 # Serverlessguru Code Challenge
 
+|Name|Badge|
+|:-:|:-:|
+|Linters|[![Checks, linters and formatters](https://github.com/neovasili/serverless-guru-code-challenge/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/neovasili/serverless-guru-code-challenge/actions/workflows/pre-commit.yml)|
+|Quality|[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=neovasili_serverless-guru-code-challenge&metric=alert_status)](https://sonarcloud.io/dashboard?id=neovasili_serverless-guru-code-challenge)|
+|Build and deploy check|[![Build check](https://github.com/neovasili/serverless-guru-code-challenge/actions/workflows/build-check.yaml/badge.svg)](https://github.com/neovasili/serverless-guru-code-challenge/actions/workflows/build-check.yaml)|
+|Run tests|[![Run Tests](https://github.com/neovasili/serverless-guru-code-challenge/actions/workflows/run-tests.yaml/badge.svg)](https://github.com/neovasili/serverless-guru-code-challenge/actions/workflows/run-tests.yaml)|
+
 Repository containing the code challenge requested
 
 - [Serverlessguru Code Challenge](#serverlessguru-code-challenge)
@@ -37,14 +44,15 @@ sls info --name juf --region eu-west-1 --cognito-arn "arn:aws:cognito-idp:eu-wes
 
 We have a solution here to simplify this.
 
-You need to create a file called `./api/.local-arguments.yml` (there is a template file that you can use it to simplify the process `.local-arguments.yml.template`) with the following content:
+You need to create a file called `./api/.local-arguments.yml` (there is a template file that you can use it to simplify the process `.local-arguments.template`) with the following content:
 
 ```yaml
 ---
-stage: ${opt:stage, "dev"}
+stage: ${opt:STAGE, "dev"}
 region: ${opt:region, "eu-west-1"}
-prefix: ${opt:prefix, "jmr"}
-api_version: ${opt:api-version, "v1"}
+prefix: ${env:PREFIX, "test"}
+account: ${env:AWS_ACCOUNT_ID, "123456789012"}
+api_version: ${env:API_VERSION, "v1"}
 ```
 
 Just change the uppercase values with yours and that's it!
@@ -77,8 +85,9 @@ provider:
 |:--:|:--:|:--:|
 |`stage`|`dev`|Service deployment stage|
 |`region`|`eu-west-1`|AWS region to deploy to|
-|`prefix`||Prefix added to the service name just to avoid service development deployment collisions|
-|`api-version`||Argument to define API version which can be useful for deployment purposes|
+|`prefix`|`test`|Prefix added to the service name just to avoid service development deployment collisions|
+|`account`|`123456789012`|AWS account were to deploy the backend stack|
+|`api-version`|`v1`|Argument to define API version which can be useful for deployment purposes|
 
 ### Development
 

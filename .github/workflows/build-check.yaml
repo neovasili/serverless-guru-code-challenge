@@ -1,5 +1,5 @@
 ---
-name: "Build check"
+name: "Build and deploy check"
 on:
   pull_request:
     branches:
@@ -10,11 +10,79 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Get short commit
+        id: get_short_commit
+        run: |
+          SHORT_COMMIT_ID=$(git rev-parse --short HEAD)
+          echo "Current short_commit: $SHORT_COMMIT_ID"
+          echo ::set-output name=short_commit::${SHORT_COMMIT_ID}
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.FAKE_BUILD_KEY }}
-          aws-secret-access-key: ${{ secrets.FAKE_BUILD_SECRET }}
+          aws-access-key-id: ${{ secrets.BUILD_KEY }}
+          aws-secret-access-key: ${{ secrets.BUILD_SECRET }}
           aws-region: eu-west-1
-      - name: Try to build docker image
-        run: docker build --build-arg access_key="$AWS_ACCESS_KEY_ID" --build-arg secret_key="$AWS_SECRET_ACCESS_KEY" --build-arg aws_region=eu-west-1 -t build-check:test .
+      - name: Build image
+        uses: neovasili/aws-codebuild@v1.1.1
+        with:
+          aws_region: eu-west-1
+          codebuild_job_name: build-images
+          codebuild_log_group: /aws/codebuild/build-images-project
+          s3_path: ${{ secrets.ARTIFACTS_ACCOUNT }}-build-images-project-source-bucket/orders-backend
+        env:
+          PLAINTEXT_SOURCE_BUCKET_NAME: ${{ secrets.ARTIFACTS_ACCOUNT }}-build-images-project-source-bucket
+          PLAINTEXT_IMAGE_REPO_NAME: orders-backend
+          PLAINTEXT_IMAGE_TAG: ci_${{ github.sha }}
+          PLAINTEXT_STAGE: ci
+          PLAINTEXT_REGION: eu-west-1
+          PLAINTEXT_PREFIX: ci-${{ steps.get_short_commit.outputs.short_commit }}
+          PLAINTEXT_AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_ACCOUNT }}
+          PLAINTEXT_API_VERSION: ci
+
+  deploy-backend:
+    runs-on: ubuntu-latest
+    needs: build-image
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get short commit
+        id: get_short_commit
+        run: |
+          SHORT_COMMIT_ID=$(git rev-parse --short HEAD)
+          echo "Current short_commit: $SHORT_COMMIT_ID"
+          echo ::set-output name=short_commit::${SHORT_COMMIT_ID}
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.BUILD_KEY }}
+          aws-secret-access-key: ${{ secrets.BUILD_SECRET }}
+          aws-region: eu-west-1
+      - name: Deploy BackendStack check
+        uses: neovasili/aws-codebuild@v1.1.1
+        with:
+          aws_region: eu-west-1
+          codebuild_job_name: orders-backend-deploy
+          codebuild_log_group: /aws/codebuild/orders-backend-deploy-project
+          override_image_ssm_base: /codebuild/orders-backend-deploy/image-base
+          override_image_tag_prefix: ci
+        env:
+          PLAINTEXT_STAGE: ci
+          PLAINTEXT_REGION: eu-west-1
+          PLAINTEXT_PREFIX: ci-${{ steps.get_short_commit.outputs.short_commit }}
+          PLAINTEXT_AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_ACCOUNT }}
+          PLAINTEXT_API_VERSION: ci
+      - name: Remove BackendStack temporally created stack
+        if: ${{ always() }}
+        uses: neovasili/aws-codebuild@v1.1.1
+        with:
+          aws_region: eu-west-1
+          codebuild_job_name: orders-backend-destroy
+          codebuild_log_group: /aws/codebuild/orders-backend-destroy-project
+          override_image_ssm_base: /codebuild/orders-backend-destroy/image-base
+          override_image_tag_prefix: ci
+        env:
+          PLAINTEXT_STAGE: ci
+          PLAINTEXT_REGION: eu-west-1
+          PLAINTEXT_PREFIX: ci-${{ steps.get_short_commit.outputs.short_commit }}
+          PLAINTEXT_AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_ACCOUNT }}
+          PLAINTEXT_API_VERSION: ci
