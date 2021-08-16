@@ -28,3 +28,5 @@ jobs:
           PLAINTEXT_AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_ACCOUNT }}
           PLAINTEXT_IMAGE_REPO_NAME: orders-backend
           PLAINTEXT_IMAGE_TAG: ci_${{ github.sha }}
+          PLAINTEXT_KEY_ID: ${{ secrets.FAKE_BUILD_KEY }}
+          PLAINTEXT_SECRET_ACCESS_KEY: ${{ secrets.FAKE_BUILD_SECRET }}
