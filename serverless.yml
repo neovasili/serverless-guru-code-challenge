@@ -167,7 +167,7 @@ custom:
     pythonBin: /usr/bin/python3
     dockerizePip: non-linux
     layer:
-      name: python-requirements
+      name: ${self:custom.base_prefix}-python-requirements
       description: Python requirements lambda layer
       compatibleRuntimes:
         - python3.8
