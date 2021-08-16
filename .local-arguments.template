@@ -2,4 +2,5 @@
 stage: ${opt:stage, "dev"}
 region: ${opt:region, "eu-west-1"}
 prefix: ${opt:prefix, "test"}
+account: ${opt:account, "123456789012"}
 api_version: ${opt:api-version, "v1"}

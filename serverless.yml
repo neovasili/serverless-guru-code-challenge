@@ -29,8 +29,8 @@ custom:
   arguments: ${file( .local-arguments.yml )}
   base_prefix: ${self:custom.arguments.prefix}-${self:custom.arguments.stage}
   base_arn:
-    dynamodb: arn:aws:dynamodb:${aws:region}:${aws:accountId}
-    lambda: arn:aws:lambda:${aws:region}:${aws:accountId}
+    dynamodb: arn:aws:dynamodb:${self:custom.arguments.region}:${self:custom.arguments.account}
+    lambda: arn:aws:lambda:${self:custom.arguments.region}:${self:custom.arguments.account}
   dynamodb:
     orders:
       table_name: ${self:custom.base_prefix}-orders

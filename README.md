@@ -51,6 +51,7 @@ You need to create a file called `./api/.local-arguments.yml` (there is a templa
 stage: ${opt:stage, "dev"}
 region: ${opt:region, "eu-west-1"}
 prefix: ${opt:prefix, "jmr"}
+account: ${opt:account, "123456789012"}
 api_version: ${opt:api-version, "v1"}
 ```
 
@@ -84,8 +85,9 @@ provider:
 |:--:|:--:|:--:|
 |`stage`|`dev`|Service deployment stage|
 |`region`|`eu-west-1`|AWS region to deploy to|
-|`prefix`||Prefix added to the service name just to avoid service development deployment collisions|
-|`api-version`||Argument to define API version which can be useful for deployment purposes|
+|`prefix`|`test`|Prefix added to the service name just to avoid service development deployment collisions|
+|`account`|`123456789012`|AWS account were to deploy the backend stack|
+|`api-version`|`v1`|Argument to define API version which can be useful for deployment purposes|
 
 ### Development
 

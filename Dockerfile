@@ -10,14 +10,6 @@ ARG aws_cli_ver="1.19.57"
 
 ARG sls_ver="2.53.1"
 
-ARG access_key=""
-ARG secret_key=""
-ARG aws_region="eu-west-1"
-
-ENV AWS_ACCESS_KEY_ID=${access_key}
-ENV AWS_SECRET_ACCESS_KEY=${secret_key}
-ENV AWS_REGION=${aws_region}
-
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN mkdir /opt/api

@@ -28,8 +28,6 @@ jobs:
           PLAINTEXT_AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_ACCOUNT }}
           PLAINTEXT_IMAGE_REPO_NAME: orders-backend
           PLAINTEXT_IMAGE_TAG: ci_${{ github.sha }}
-          PLAINTEXT_KEY_ID: ${{ secrets.FAKE_BUILD_KEY }}
-          PLAINTEXT_SECRET_ACCESS_KEY: ${{ secrets.FAKE_BUILD_SECRET }}
 
   deploy-backend:
     runs-on: ubuntu-latest
@@ -56,7 +54,7 @@ jobs:
           PLAINTEXT_STAGE: ci
           PLAINTEXT_REGION: eu-west-1
           PLAINTEXT_PREFIX: sgcc
-          PLAINTEXT_API_VERSION: v1
+          PLAINTEXT_API_VERSION: ci
       - name: Remove BackendStack temporally created stack
         if: ${{ always() }}
         uses: neovasili/aws-codebuild@v1.1.1
@@ -71,4 +69,4 @@ jobs:
           PLAINTEXT_STAGE: ci
           PLAINTEXT_REGION: eu-west-1
           PLAINTEXT_PREFIX: sgcc
-          PLAINTEXT_API_VERSION: v1
+          PLAINTEXT_API_VERSION: ci
