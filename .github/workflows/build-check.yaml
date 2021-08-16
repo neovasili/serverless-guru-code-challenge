@@ -35,7 +35,7 @@ jobs:
           PLAINTEXT_IMAGE_TAG: ci_${{ github.sha }}
           PLAINTEXT_STAGE: ci
           PLAINTEXT_REGION: eu-west-1
-          PLAINTEXT_PREFIX: ${{ steps.get_short_commit.outputs.short_commit }}
+          PLAINTEXT_PREFIX: ci-${{ steps.get_short_commit.outputs.short_commit }}
           PLAINTEXT_AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_ACCOUNT }}
           PLAINTEXT_API_VERSION: ci
 
@@ -68,7 +68,7 @@ jobs:
         env:
           PLAINTEXT_STAGE: ci
           PLAINTEXT_REGION: eu-west-1
-          PLAINTEXT_PREFIX: ${{ steps.get_short_commit.outputs.short_commit }}
+          PLAINTEXT_PREFIX: ci-${{ steps.get_short_commit.outputs.short_commit }}
           PLAINTEXT_AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_ACCOUNT }}
           PLAINTEXT_API_VERSION: ci
       - name: Remove BackendStack temporally created stack
@@ -83,6 +83,6 @@ jobs:
         env:
           PLAINTEXT_STAGE: ci
           PLAINTEXT_REGION: eu-west-1
-          PLAINTEXT_PREFIX: ${{ steps.get_short_commit.outputs.short_commit }}
+          PLAINTEXT_PREFIX: ci-${{ steps.get_short_commit.outputs.short_commit }}
           PLAINTEXT_AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_ACCOUNT }}
           PLAINTEXT_API_VERSION: ci
