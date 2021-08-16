@@ -10,6 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Get short commit
+        id: get_short_commit
+        run: |
+          SHORT_COMMIT_ID=$(git rev-parse --short HEAD)
+          echo "Current short_commit: $SHORT_COMMIT_ID"
+          echo ::set-output name=short_commit::${SHORT_COMMIT_ID}
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -25,9 +31,13 @@ jobs:
           s3_path: ${{ secrets.ARTIFACTS_ACCOUNT }}-build-images-project-source-bucket/orders-backend
         env:
           PLAINTEXT_SOURCE_BUCKET_NAME: ${{ secrets.ARTIFACTS_ACCOUNT }}-build-images-project-source-bucket
-          PLAINTEXT_AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_ACCOUNT }}
           PLAINTEXT_IMAGE_REPO_NAME: orders-backend
           PLAINTEXT_IMAGE_TAG: ci_${{ github.sha }}
+          PLAINTEXT_STAGE: ci
+          PLAINTEXT_REGION: eu-west-1
+          PLAINTEXT_PREFIX: ${{ steps.get_short_commit.outputs.short_commit }}
+          PLAINTEXT_AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_ACCOUNT }}
+          PLAINTEXT_API_VERSION: ci
 
   deploy-backend:
     runs-on: ubuntu-latest
@@ -35,6 +45,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Get short commit
+        id: get_short_commit
+        run: |
+          SHORT_COMMIT_ID=$(git rev-parse --short HEAD)
+          echo "Current short_commit: $SHORT_COMMIT_ID"
+          echo ::set-output name=short_commit::${SHORT_COMMIT_ID}
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -50,10 +66,10 @@ jobs:
           override_image_ssm_base: /codebuild/orders-backend-deploy/image-base
           override_image_tag_prefix: ci
         env:
-          PLAINTEXT_AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_ACCOUNT }}
           PLAINTEXT_STAGE: ci
           PLAINTEXT_REGION: eu-west-1
-          PLAINTEXT_PREFIX: sgcc
+          PLAINTEXT_PREFIX: ${{ steps.get_short_commit.outputs.short_commit }}
+          PLAINTEXT_AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_ACCOUNT }}
           PLAINTEXT_API_VERSION: ci
       - name: Remove BackendStack temporally created stack
         if: ${{ always() }}
@@ -65,8 +81,8 @@ jobs:
           override_image_ssm_base: /codebuild/orders-backend-destroy/image-base
           override_image_tag_prefix: ci
         env:
-          PLAINTEXT_AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_ACCOUNT }}
           PLAINTEXT_STAGE: ci
           PLAINTEXT_REGION: eu-west-1
-          PLAINTEXT_PREFIX: sgcc
+          PLAINTEXT_PREFIX: ${{ steps.get_short_commit.outputs.short_commit }}
+          PLAINTEXT_AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_ACCOUNT }}
           PLAINTEXT_API_VERSION: ci

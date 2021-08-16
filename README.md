@@ -48,11 +48,11 @@ You need to create a file called `./api/.local-arguments.yml` (there is a templa
 
 ```yaml
 ---
-stage: ${opt:stage, "dev"}
-region: ${opt:region, "eu-west-1"}
-prefix: ${opt:prefix, "jmr"}
-account: ${opt:account, "123456789012"}
-api_version: ${opt:api-version, "v1"}
+stage: ${env:STAGE, "dev"}
+region: ${env:region, "eu-west-1"}
+prefix: ${env:PREFIX, "test"}
+account: ${env:AWS_ACCOUNT_ID, "123456789012"}
+api_version: ${env:API_VERSION, "v1"}
 ```
 
 Just change the uppercase values with yours and that's it!
