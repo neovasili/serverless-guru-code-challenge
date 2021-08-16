@@ -48,8 +48,8 @@ You need to create a file called `./api/.local-arguments.yml` (there is a templa
 
 ```yaml
 ---
-stage: ${env:STAGE, "dev"}
-region: ${env:region, "eu-west-1"}
+stage: ${opt:STAGE, "dev"}
+region: ${opt:region, "eu-west-1"}
 prefix: ${env:PREFIX, "test"}
 account: ${env:AWS_ACCOUNT_ID, "123456789012"}
 api_version: ${env:API_VERSION, "v1"}
