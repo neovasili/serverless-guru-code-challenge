@@ -38,3 +38,36 @@ jobs:
           PLAINTEXT_PREFIX: sgcc
           PLAINTEXT_AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_ACCOUNT }}
           PLAINTEXT_API_VERSION: v1
+
+  deploy-backend:
+    runs-on: ubuntu-latest
+    needs: build-image
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get tag name
+        id: get_current_tag
+        run: |
+          TAG=$(git describe --tags --abbrev=0)
+          echo "Current tag: $TAG"
+          echo ::set-output name=tag::${TAG}
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.BUILD_KEY }}
+          aws-secret-access-key: ${{ secrets.BUILD_SECRET }}
+          aws-region: eu-west-1
+      - name: Deploy backend to int stage
+        uses: neovasili/aws-codebuild@v1.1.1
+        with:
+          aws_region: eu-west-1
+          codebuild_job_name: orders-backend-deploy
+          codebuild_log_group: /aws/codebuild/orders-backend-deploy-project
+          override_image_ssm_base: /codebuild/orders-backend-deploy/image-base
+          override_image_tag_prefix: ${{ steps.get_current_tag.outputs.tag }}
+        env:
+          PLAINTEXT_STAGE: int
+          PLAINTEXT_REGION: eu-west-1
+          PLAINTEXT_PREFIX: sgcc
+          PLAINTEXT_AWS_ACCOUNT_ID: ${{ secrets.ARTIFACTS_ACCOUNT }}
+          PLAINTEXT_API_VERSION: v1
